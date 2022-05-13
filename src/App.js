@@ -96,7 +96,7 @@ function SideMenu(props) {
       onMouseEnter={(event) => {
             console.log("Mouse Enter Event", event);
             if (hoverItems.includes()){
-              
+
             }
       }}
       
@@ -114,8 +114,10 @@ function SideMenu(props) {
                 onMouseEnter={
                   (event) => {
                       if (hoverItems.includes(category)){
-                        const temp =new Set(hoverItems);
-                        temp.delete(category);
+                        const index = hoverItems.indexOf(category);
+                        const temp = hoverItems.slice(0, index);
+                        temp.push(category)
+                        //temp.delete(category);
                         dispatch({type: 'hover/set', payload: [...temp]})
                       }
                       else{
