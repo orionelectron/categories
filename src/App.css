@@ -41,7 +41,9 @@
   justify-content: start;
   
 }
-
+.categories_container > div{
+  margin-right: 1px;
+}
 .individual_cat_item:hover{
   background-color: aqua;
   cursor: pointer;

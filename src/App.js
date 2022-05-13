@@ -111,7 +111,7 @@ function SideMenu(props) {
         const yc = boundRectOfContainer.height + boundRectOfContainer.top;
         
         //console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
-        if (event.screenX < xc){
+        if (event.screenX < xc ){
           //console.log("category",category)
 
           
@@ -171,7 +171,7 @@ function SideMenu(props) {
                       const yc = boundRectOfContainer.height + boundRectOfContainer.top;
                       
                       console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
-                      if (event.screenY >= yc && event.screenY > 0 && event.screenX <= x){
+                      if (event.screenY >= y && event.screenY > 0 && event.screenX <= x ){
                         console.log("category",category)
 
                         
