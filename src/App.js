@@ -137,7 +137,7 @@ function SideMenu(props) {
               const listOrder = values[3];
 
 
-              return <div className="individual_cat_item" key={`${category}_${listOrder}`} depth={depth} index={index}
+              return <div className={hoverItems.includes(category) ? "individual_cat_item_focused": "individual_cat_item"}  key={`${category}_${listOrder}`} depth={depth} index={index}
                 ref={ref2}
                 onMouseEnter={
                   (event) => {

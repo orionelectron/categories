@@ -50,6 +50,13 @@
   color: white;
 }
 
+.individual_cat_item_focused, .individual_cat_item_focused:hover{
+  background-color: aqua;
+  color: white;
+}
+
+
+
 .individual_cat_item{
   padding: 10px;
 }
