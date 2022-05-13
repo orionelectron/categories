@@ -3,11 +3,34 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+
+const store = configureStore({ reducer: hoverReducer });
+
+function hoverReducer(state = ["products"], action) {
+ 
+  if (action.type === 'hover/set') {
+      const temp = new Set([...action.payload])
+    return [
+      ...temp
+    ]
+  }
+  if (action.type === 'hover/add'){
+    const temp = new Set([...state, ...action.payload]);
+    return [...temp]
+  }
+  return state;
+}
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
+
   </React.StrictMode>
 );
 
