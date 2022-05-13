@@ -80,7 +80,7 @@ function SideMenu(props) {
   console.log("Props", props)
   console.log("Keys",Object.keys(props.content)[0])
   const ref = useRef()
-  const parent = Object.keys(props.content)[0];
+  const parent = Object.values(props.content)[0];
   const children = Object.values(props.content)[1];
   const dispatch = useDispatch();
   const hoverItems = useSelector(state => state)
@@ -92,7 +92,10 @@ function SideMenu(props) {
 
  
   return (
-      <div className='sub_category_visible'>
+      <div className={hoverItems.includes(parent)? 'sub_category_visible' : 'sub_category_hidden'} ref={ref} 
+      
+      
+      >
           {children.map((child) => {
             console.log("child",child);
               const values = Object.values(child);
@@ -103,7 +106,13 @@ function SideMenu(props) {
 
 
               return <div className="individual_cat_item" key={`${category}_${listOrder}`} depth={depth} index={index}
-                  
+                onMouseEnter={
+                  (event) => {
+                      const temp = new Set(hoverItems);
+                      temp.add(category);
+                      dispatch({type: 'hover/add', payload: [...temp]})
+                  }
+                }
               > {category} </div> 
           })}
 
