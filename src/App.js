@@ -77,15 +77,16 @@ function groupByParent(structuredData) {
 
 
 function SideMenu(props) {
-  console.log("Props", props)
-  console.log("Keys",Object.keys(props.content)[0])
-  const ref = useRef()
+  //console.log("Props", props)
+  //console.log("Keys",Object.keys(props.content)[0])
+  const ref = useRef(null)
+  const ref2 = useRef(null)
   const parent = Object.values(props.content)[0];
   const children = Object.values(props.content)[1];
   const dispatch = useDispatch();
   const hoverItems = useSelector(state => state)
   //const children= [{category: "xyx", depth: 2, index: 0, listOrder: 44 }]
- 
+  let todelete = "";
   const [finalclass, setfinalclass] = useState();
 
 
@@ -94,15 +95,15 @@ function SideMenu(props) {
   return (
       <div className={hoverItems.includes(parent)? 'sub_category_visible' : 'sub_category_hidden'} ref={ref} 
       onMouseEnter={(event) => {
-            console.log("Mouse Enter Event", event);
-            if (hoverItems.includes()){
+            //console.log("Mouse Enter Event", event);
+            if (hoverItems.includes(parent)){
 
             }
       }}
       
       >
           {children.map((child) => {
-            console.log("child",child);
+           //s console.log("child",child);
               const values = Object.values(child);
               const category = values[0];
               const depth = values[1];
@@ -111,6 +112,7 @@ function SideMenu(props) {
 
 
               return <div className="individual_cat_item" key={`${category}_${listOrder}`} depth={depth} index={index}
+                ref={ref2}
                 onMouseEnter={
                   (event) => {
                       if (hoverItems.includes(category)){
@@ -121,13 +123,43 @@ function SideMenu(props) {
                         dispatch({type: 'hover/set', payload: [...temp]})
                       }
                       else{
+                        
                         const temp = new Set(hoverItems);
+                        temp.delete(todelete);
                         temp.add(category);
-                        dispatch({type: 'hover/add', payload: [...temp]})
+                        dispatch({type: 'hover/set', payload: [...temp]})
                       }
                       
                   }
                 }
+
+                onMouseLeave={ (event) => {
+                      const boundRectOfContainer = ref.current.getBoundingClientRect();
+                      const boundRectOfChild = ref2.current.getBoundingClientRect();
+
+                      const x = boundRectOfChild.width + boundRectOfChild.left;
+                      const y = boundRectOfChild.height + boundRectOfChild.top;
+
+                      const xc = boundRectOfContainer.width + boundRectOfContainer.left;
+
+                      const yc = boundRectOfContainer.height + boundRectOfContainer.top;
+                      
+                      console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
+                      if (event.screenY >= yc && event.screenY > 0){
+                        console.log("category",category)
+
+                        
+                        const index = hoverItems.indexOf(category);
+                        todelete = category
+                        const temp = hoverItems.slice(0, index);
+                        console.log("temp",temp);
+                        //temp.push(category)
+                        
+                        dispatch({type: 'hover/set', payload:[...temp]})
+                        
+                      }
+                      
+                }}
               > {category} </div> 
           })}
 
