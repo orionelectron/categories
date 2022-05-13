@@ -100,6 +100,32 @@ function SideMenu(props) {
 
             }
       }}
+
+      onMouseLeave={ (event) => {
+        const boundRectOfContainer = ref.current.getBoundingClientRect();
+        
+
+
+        const xc = boundRectOfContainer.width + boundRectOfContainer.left;
+
+        const yc = boundRectOfContainer.height + boundRectOfContainer.top;
+        
+        //console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
+        if (event.screenX < xc){
+          //console.log("category",category)
+
+          
+          const index = hoverItems.indexOf(parent);
+          todelete = parent;
+          const temp = hoverItems.slice(0, index);
+          console.log("temp",temp);
+          //temp.push(category)
+          
+          dispatch({type: 'hover/set', payload:[...temp]})
+          
+        }
+        
+  }}
       
       >
           {children.map((child) => {
@@ -145,7 +171,7 @@ function SideMenu(props) {
                       const yc = boundRectOfContainer.height + boundRectOfContainer.top;
                       
                       console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
-                      if (event.screenY >= yc && event.screenY > 0){
+                      if (event.screenY >= yc && event.screenY > 0 && event.screenX <= x){
                         console.log("category",category)
 
                         
