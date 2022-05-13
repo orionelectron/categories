@@ -93,7 +93,12 @@ function SideMenu(props) {
  
   return (
       <div className={hoverItems.includes(parent)? 'sub_category_visible' : 'sub_category_hidden'} ref={ref} 
-      
+      onMouseEnter={(event) => {
+            console.log("Mouse Enter Event", event);
+            if (hoverItems.includes()){
+              
+            }
+      }}
       
       >
           {children.map((child) => {
@@ -108,9 +113,17 @@ function SideMenu(props) {
               return <div className="individual_cat_item" key={`${category}_${listOrder}`} depth={depth} index={index}
                 onMouseEnter={
                   (event) => {
-                      const temp = new Set(hoverItems);
-                      temp.add(category);
-                      dispatch({type: 'hover/add', payload: [...temp]})
+                      if (hoverItems.includes(category)){
+                        const temp =new Set(hoverItems);
+                        temp.delete(category);
+                        dispatch({type: 'hover/set', payload: [...temp]})
+                      }
+                      else{
+                        const temp = new Set(hoverItems);
+                        temp.add(category);
+                        dispatch({type: 'hover/add', payload: [...temp]})
+                      }
+                      
                   }
                 }
               > {category} </div> 
