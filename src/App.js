@@ -100,15 +100,16 @@ function SideMenu(props) {
   console.log("DAta", data)
   const parent = data.parent;
   const children = data.foundCats;
+  let isRoot = false;
+  if (props.initial == "products")
+    isRoot = true;
   if (children.length == 0)
-    return <> <div className='parent'> {parent} </div> </>
-  
-  console.log(parent);
-  console.log(children)
+    return  <div className='parent'> {parent} </div> 
+
   return (
     <div className="dropdown">
-      <div className='parent'> {parent} </div>
-      <div className="dropdown-content">
+     {!isRoot ? <div className='parent'> {parent} </div> : <></> }
+      <div className="dropdown-content" style={isRoot ? {display: "block"}: {}}>
           {
             children.map((child, index) => {
 

@@ -22,9 +22,14 @@
   display: block;
   
 }
-
-.dropdown-content  .parent:hover {background-color: #ddd;}
+.parent{
+  margin: 0;
+  width: 80%;
+  
+  
+  cursor: pointer;
+}
+.dropdown-content > div:hover {background-color: #ddd;}
 
 .dropdown:hover > .dropdown-content {display: block;}
 
-.dropdown:hover > .parent {background-color: #3e8e41;}
