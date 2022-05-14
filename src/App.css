@@ -1,75 +1,30 @@
-.sub_category_visible{
-  text-align: center;
-
-  width: 200px;
-  border: 2px solid black;
-  display: block;
-  background-color: bisque;
-  color: aqua;
-  
-}
-
-.parent_category{
-  width: 100%;
-}
-
-
-
-.sub_category_visible > div:hover{
-  background-color: aqua;
-  color: white;
-  cursor: pointer;
-  padding: 10px;
- 
-}
-
-
-
-.sub_category_hidden{
-  display: none;
-}
-
-.sub_category_visible > div{
-  padding: 10px;
- 
-}
-
-
-
-.categories_container{
-  display: flex;
-  justify-content: start;
-  
-}
-.categories_container > div{
-  margin-right: 1px;
-}
-.individual_cat_item:hover{
-  background-color: aqua;
-  cursor: pointer;
-  color: white;
-}
-
-.individual_cat_item_focused, .individual_cat_item_focused:hover{
-  background-color: aqua;
-  color: white;
-}
-
-
-
-.individual_cat_item{
-  padding: 10px;
-}
-
-.category > .parent_category:hover{
-
-}
-
-.category{
-  background-color: black;
-  color: white;
-  width: 200px;
-  padding: 10px;
-  text-align: center;
+.dropdown {
   position: relative;
+  display: inline-block;
+  
 }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content > div {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  
+}
+
+.dropdown-content  .parent:hover {background-color: #ddd;}
+
+.dropdown:hover > .dropdown-content {display: block;}
+
+.dropdown:hover > .parent {background-color: #3e8e41;}

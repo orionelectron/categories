@@ -15,6 +15,11 @@ let data = {
 
 }
 
+const traversed = traverseFromHere();
+const grouped = groupByParent(traversed).groupedData;
+
+const mod_data = grouped;
+
 function traverseFromHere(dataset = data, initial = "products", depth = 0) {
   let queue = [];
   let start = initial;
@@ -50,11 +55,13 @@ function findSubcatOfParent(parent, dataset) {
   for (let i = 0; i < dataset.length; i++) {
     if (parent === dataset[i].parent) {
       foundCats.push(dataset[i])
+      //console.log("dataset", dataset[i])
 
     }
+    
   }
 
-  return {parent,foundCats};
+  return { parent, foundCats };
 }
 
 function groupByParent(structuredData) {
@@ -77,121 +84,43 @@ function groupByParent(structuredData) {
 
 
 function SideMenu(props) {
-  //console.log("Props", props)
-  //console.log("Keys",Object.keys(props.content)[0])
-  const ref = useRef(null)
-  const ref2 = useRef(null)
-  const parent = Object.values(props.content)[0];
-  const children = Object.values(props.content)[1];
-  const dispatch = useDispatch();
-  const hoverItems = useSelector(state => state)
-  //const children= [{category: "xyx", depth: 2, index: 0, listOrder: 44 }]
-  let todelete = "";
-  const [finalclass, setfinalclass] = useState();
 
-
-
- 
+  let data = { parent: "", foundCats: [] }
+  for (let i = 0; i < props.mod_data.length; i++) {
+    const current = props.mod_data[i];
+    if (current.parent === props.initial) {
+     
+      data = current;
+      break;
+    }
+    else{
+      data.parent = props.initial
+    }
+  }
+  console.log("DAta", data)
+  const parent = data.parent;
+  const children = data.foundCats;
+  if (children.length == 0)
+    return <> <div className='parent'> {parent} </div> </>
+  
+  console.log(parent);
+  console.log(children)
   return (
-      <div className={hoverItems.includes(parent)? 'sub_category_visible' : 'sub_category_hidden'} ref={ref} 
-      onMouseEnter={(event) => {
-            //console.log("Mouse Enter Event", event);
-            if (hoverItems.includes(parent)){
+    <div className="dropdown">
+      <div className='parent'> {parent} </div>
+      <div className="dropdown-content">
+          {
+            children.map((child, index) => {
 
-            }
-      }}
+              return <SideMenu key={`${index}_${child.category}`} initial={child.category} mod_data={mod_data} />
+            })
+          }
 
-      onMouseLeave={ (event) => {
-        const boundRectOfContainer = ref.current.getBoundingClientRect();
-        
-
-
-        const xc = boundRectOfContainer.width + boundRectOfContainer.left;
-
-        const yc = boundRectOfContainer.height + boundRectOfContainer.top;
-        
-        //console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
-        if (event.screenX < xc ){
-          //console.log("category",category)
-
-          
-          const index = hoverItems.indexOf(parent);
-          todelete = parent;
-          const temp = hoverItems.slice(0, index);
-          console.log("temp",temp);
-          //temp.push(category)
-          
-          dispatch({type: 'hover/set', payload:[...temp]})
-          
-        }
-        
-  }}
+        </div> 
       
-      >
-          {children.map((child) => {
-           //s console.log("child",child);
-              const values = Object.values(child);
-              const category = values[0];
-              const depth = values[1];
-              const index = values[2];
-              const listOrder = values[3];
 
-
-              return <div className={hoverItems.includes(category) ? "individual_cat_item_focused": "individual_cat_item"}  key={`${category}_${listOrder}`} depth={depth} index={index}
-                ref={ref2}
-                onMouseEnter={
-                  (event) => {
-                      if (hoverItems.includes(category)){
-                        const index = hoverItems.indexOf(category);
-                        const temp = hoverItems.slice(0, index);
-                        temp.push(category)
-                        //temp.delete(category);
-                        dispatch({type: 'hover/set', payload: [...temp]})
-                      }
-                      else{
-                        
-                        const temp = new Set(hoverItems);
-                        temp.delete(todelete);
-                        temp.add(category);
-                        dispatch({type: 'hover/set', payload: [...temp]})
-                      }
-                      
-                  }
-                }
-
-                onMouseLeave={ (event) => {
-                      const boundRectOfContainer = ref.current.getBoundingClientRect();
-                      const boundRectOfChild = ref2.current.getBoundingClientRect();
-
-                      const x = boundRectOfChild.width + boundRectOfChild.left;
-                      const y = boundRectOfChild.height + boundRectOfChild.top;
-
-                      const xc = boundRectOfContainer.width + boundRectOfContainer.left;
-
-                      const yc = boundRectOfContainer.height + boundRectOfContainer.top;
-                      
-                      console.log("xc yc",xc, yc, "screenx screeny", event.screenX, event.screenY)
-                      if (event.screenY >= y && event.screenY > 0 && event.screenX <= x ){
-                        console.log("category",category)
-
-                        
-                        const index = hoverItems.indexOf(category);
-                        todelete = category
-                        const temp = hoverItems.slice(0, index);
-                        console.log("temp",temp);
-                        //temp.push(category)
-                        
-                        dispatch({type: 'hover/set', payload:[...temp]})
-                        
-                      }
-                      
-                }}
-              > {category} </div> 
-          })}
-
-      </div>
+    </div>
   )
-
 }
 
 
@@ -199,10 +128,10 @@ function SideMenu(props) {
 
 function App() {
   const [categories, setCategories] = useState();
-  const traversedData = traverseFromHere();
-  const groupedData = groupByParent(traversedData).groupedData;
+  //const traversedData = traverseFromHere();
+  //const groupedData = groupByParent(traversedData).groupedData;
   //console.log(categories)
-  const [components, setComponents] = useState(groupedData);
+  const [components, setComponents] = useState(grouped);
   const dispatch = useDispatch();
   const hoverItems = useSelector(state => state)
 
@@ -221,13 +150,12 @@ function App() {
       }
       }
     >
-      {
-        components.map((component, index) => {
-          console.log(component);
-          return <SideMenu key={index} content={component}/>
-        })
-      }
-      
+
+
+      <SideMenu key="products" initial="products" mod_data={mod_data} />
+
+
+
     </div>
   )
 }
